@@ -8,10 +8,14 @@ export default defineConfig({
   },
   tanstackStart: {
     server: { entry: "server" },
-    pages: [{ path: "/" }],
-    prerender: {
-      enabled: true,
-    },
+    ...(isGitHubPages
+      ? {
+          pages: [{ path: "/" }],
+          prerender: {
+            enabled: true,
+          },
+        }
+      : {}),
   },
   nitro: isGitHubPages ? false : undefined,
 });
