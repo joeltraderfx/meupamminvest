@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import traderPortrait from "@/assets/trader-portrait.jpg";
-import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, TrendingUp, CheckCircle2 } from "lucide-react";
+import pammLogo from "@/assets/pamm-logo.png.asset.json";
+import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -47,12 +48,10 @@ function Nav() {
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center btn-gold">
-            <TrendingUp className="w-5 h-5" strokeWidth={2.5} />
-          </div>
+          <img src={pammLogo.url} alt="Meu PAMM Invest" className="w-10 h-10 rounded-lg object-contain" />
           <div className="leading-tight">
-            <div className="font-display text-lg font-semibold">TraderLand</div>
-            <div className="text-[10px] tracking-[0.3em] text-gold uppercase">Prestige</div>
+            <div className="font-display text-base font-semibold">MEU PAMM</div>
+            <div className="text-[10px] tracking-[0.3em] text-gold uppercase">Invest</div>
           </div>
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
@@ -301,12 +300,10 @@ function Footer() {
     <footer className="border-t border-border py-10">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center btn-gold">
-            <TrendingUp className="w-4 h-4" strokeWidth={2.5} />
-          </div>
-          <span className="font-display">TraderLand Prestige</span>
+          <img src={pammLogo.url} alt="Meu PAMM Invest" className="w-8 h-8 rounded-md object-contain" />
+          <span className="font-display">Meu PAMM Invest</span>
         </div>
-        <p>© {new Date().getFullYear()} TraderLand Prestige. Mercado envolve risco.</p>
+        <p>© {new Date().getFullYear()} Meu PAMM Invest. Mercado envolve risco.</p>
       </div>
     </footer>
   );
