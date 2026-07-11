@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import favicon from "../../public/favicon.ico?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -77,13 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "meupamm" },
+      { title: "Meu PAMM Invest" },
       { name: "description", content: "Para o médico que não quer perder dinheiro de novo. Mantenha 100% do controle enquanto replica operações reais de um trader com 12 anos de experiência." },
-      { property: "og:title", content: "meupamm" },
+      { property: "og:title", content: "Meu PAMM Invest" },
       { property: "og:description", content: "Para o médico que não quer perder dinheiro de novo. Mantenha 100% do controle enquanto replica operações reais de um trader com 12 anos de experiência." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "meupamm" },
+      { name: "twitter:title", content: "Meu PAMM Invest" },
       { name: "twitter:description", content: "Para o médico que não quer perder dinheiro de novo. Mantenha 100% do controle enquanto replica operações reais de um trader com 12 anos de experiência." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/YGcRdtcnQ1ctYA8w19J7j0IeBtO2/social-images/social-1783812483099-PAMM-LOGO.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/YGcRdtcnQ1ctYA8w19J7j0IeBtO2/social-images/social-1783812483099-PAMM-LOGO.webp" },
@@ -96,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: favicon, type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
