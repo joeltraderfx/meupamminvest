@@ -37,6 +37,7 @@ const steps = [
     desc: "Como assinar o contrato de gestão usando o login e senha da sua conta PAMM.",
     cover: step3Cover,
     videoId: "FQgWdEcnLqo",
+    link: { label: "Acessar contrato →", url: "https://pamm7.vtmarkets.com/app/join/1248/x6rnabpx" },
   },
   {
     n: "04",
@@ -44,12 +45,13 @@ const steps = [
     desc: "O processo completo de saque, direto pra sua conta, sem burocracia.",
     cover: step4Cover,
     videoId: "IBP9BA22jM0",
+    link: { label: "Acessar plataforma / sacar →", url: "https://pamm7.vtmarkets.com/app/auth/investor" },
   },
 ];
 
 const faqs = [
   { q: "Você pega meu dinheiro?", a: "Não. Nunca. Seu capital fica 100% na sua conta, no seu CPF. Eu não tenho acesso — nem por um segundo." },
-  { q: "Posso sacar quando quiser?", a: "Sim. Sem prazo de carência. O dinheiro é seu, na sua conta, numa corretora regulamentada (ASIC, FSCA e FSC) — você solicita o saque quando quiser." },
+  { q: "Posso sacar quando quiser?", a: "Sim. Sem prazo de carência. O dinheiro é seu, na sua conta, numa corretora regulamentada (ASIC, FSCA e FSC) — você solicita o saque quando quiser, direto na plataforma da conta PAMM." },
   { q: "Preciso saber operar?", a: "Não. Você só precisa abrir a conta e vincular ao PAMM. As operações são replicadas automaticamente." },
   { q: "Existe risco?", a: "Sim. Mercado envolve risco e não há garantia de lucro. Resultados variam entre pessoas." },
   { q: "Preciso pagar algo pra começar?", a: "Não. Abrir sua conta é gratuito. Eu só ganho 50% sobre o lucro real das operações — se você não lucra, eu não ganho nada." },
@@ -279,6 +281,17 @@ function Process() {
               <div className="p-6">
                 <h3 className="font-display text-xl mb-2">{s.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                {"link" in s && s.link && (
+                  <a
+                    href={s.link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-block mt-4 text-sm font-semibold text-gold hover:underline"
+                  >
+                    {s.link.label}
+                  </a>
+                )}
               </div>
             </div>
           ))}
