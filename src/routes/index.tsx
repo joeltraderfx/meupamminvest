@@ -13,18 +13,18 @@ const ACCOUNT_URL = "https://www.vtmarkets.net/pt/trade-now/?affid=MjQzNjA3Mzc=&
 const WA_URL = "https://chat.whatsapp.com/FxkL7gLvmi90xwC78QrxbE";
 
 const steps = [
-  { n: "01", title: "Acesso inicial", desc: "Você entra pelo acesso de R$67 e recebe o passo a passo completo." },
-  { n: "02", title: "Abre sua conta", desc: "Aprende a abrir sua conta internacional em uma corretora regulada." },
-  { n: "03", title: "Configura tudo", desc: "Configura corretamente para receber as operações em tempo real." },
-  { n: "04", title: "Começa a replicar", desc: "Suas operações começam a espelhar as minhas, automaticamente." },
+  { n: "01", title: "Abra sua conta", desc: "Você abre sua conta internacional numa corretora regulamentada (ASIC, FSCA, FSC) — gratuito, sem custo de entrada." },
+  { n: "02", title: "Vincula ao PAMM", desc: "Autoriza a réplica automática das minhas operações direto na sua conta, no seu nome." },
+  { n: "03", title: "Acompanha em tempo real", desc: "Veja cada operação sendo espelhada, sem precisar saber operar." },
+  { n: "04", title: "Saca quando quiser", desc: "Solicite o saque a qualquer momento, sem prazo de carência." },
 ];
 
 const faqs = [
   { q: "Você pega meu dinheiro?", a: "Não. Nunca. Seu capital fica 100% na sua conta, no seu CPF. Eu não tenho acesso — nem por um segundo." },
   { q: "Posso sacar quando quiser?", a: "Sim. Sem prazo de carência. O dinheiro é seu, na sua conta, numa corretora regulamentada (ASIC, FSCA e FSC) — você solicita o saque quando quiser." },
-  { q: "Preciso saber operar?", a: "Não. Você recebe o passo a passo completo para configurar tudo. As operações são replicadas automaticamente." },
+  { q: "Preciso saber operar?", a: "Não. Você só precisa abrir a conta e vincular ao PAMM. As operações são replicadas automaticamente." },
   { q: "Existe risco?", a: "Sim. Mercado envolve risco e não há garantia de lucro. Resultados variam entre pessoas." },
-  { q: "Por que pagar R$67?", a: "O valor dá acesso ao passo a passo completo e serve para filtrar pessoas realmente interessadas em começar." },
+  { q: "Preciso pagar algo pra começar?", a: "Não. Abrir sua conta é gratuito. Eu só ganho 50% sobre o lucro real das operações — se você não lucra, eu não ganho nada." },
 ];
 
 function Index() {
@@ -208,7 +208,7 @@ function Process() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Processo Simples</p>
           <h2 className="font-display text-4xl md:text-5xl mb-6">Quatro passos para replicar <em className="text-gradient-gold not-italic">operações reais</em></h2>
-          <p className="text-muted-foreground">Tudo documentado no acesso de R$67. Você recebe um passo a passo claro, do zero à configuração final.</p>
+          <p className="text-muted-foreground">Do zero à configuração final, em poucos passos — sem custo de entrada.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((s) => (
@@ -248,7 +248,7 @@ function Authority() {
           {[
             { t: "Modelo de Ganho Transparente", d: "Eu não recebo seu dinheiro nem cobro mensalidade. Ganho apenas 50% sobre o lucro real das operações. Se você não lucra, eu não ganho nada." },
             { t: "Quanto preciso investir?", d: "Você pode começar a partir de $300 dólares e escalar conforme desejar. O mínimo é definido pela corretora." },
-            { t: "O que é o acesso de R$67?", d: "É o acesso ao passo a passo completo para abrir sua conta, configurar e começar corretamente." },
+            { t: "Como funciona a réplica das operações?", d: "Você vincula sua conta via PAMM e as operações são espelhadas automaticamente, em tempo real — sem precisar acompanhar o mercado o dia todo." },
           ].map((it) => (
             <div key={it.t} className="p-8 rounded-2xl border border-border bg-card/40">
               <h3 className="font-display text-2xl mb-4 text-gold">{it.t}</h3>
