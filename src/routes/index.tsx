@@ -76,7 +76,7 @@ function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
       </div>
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
+        <div className="order-2 lg:order-1">
           <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Para quem já foi enganado uma vez e não vai deixar acontecer de novo</p>
           <h1 className="font-display text-5xl md:text-7xl font-medium leading-[1.05] mb-6">
             Nunca mais <em className="text-gradient-gold not-italic">entregue</em> seu dinheiro para ninguém.
@@ -109,14 +109,15 @@ function Hero() {
             ))}
           </div>
         </div>
-        <div className="relative">
+        <div className="relative order-1 lg:order-2">
           <div className="aspect-video rounded-2xl overflow-hidden border border-gold/30 shadow-[0_20px_80px_-20px_rgba(0,0,0,0.6)]">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/LS5JCqVXQJA"
+              src="https://www.youtube-nocookie.com/embed/LS5JCqVXQJA"
               title="Operações Internacional Replicadas"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
         </div>
