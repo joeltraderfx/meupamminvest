@@ -22,28 +22,28 @@ const steps = [
     title: "Abra a conta",
     desc: "Passo a passo pra abrir sua conta internacional, em seu nome, na VT Markets.",
     cover: step1Cover,
-    video: "https://www.youtube.com/shorts/nzyo41dosEw",
+    videoId: "nzyo41dosEw",
   },
   {
     n: "02",
     title: "Crie a conta PAMM",
     desc: "Veja como configurar sua conta PAMM pra começar a receber as operações replicadas.",
     cover: step2Cover,
-    video: "https://www.youtube.com/shorts/N--k6rrzEKg",
+    videoId: "N--k6rrzEKg",
   },
   {
     n: "03",
     title: "Assine o contrato",
     desc: "Como assinar o contrato de gestão usando o login e senha da sua conta PAMM.",
     cover: step3Cover,
-    video: "https://www.youtube.com/shorts/FQgWdEcnLqo",
+    videoId: "FQgWdEcnLqo",
   },
   {
     n: "04",
     title: "Faça seu saque",
     desc: "O processo completo de saque, direto pra sua conta, sem burocracia.",
     cover: step4Cover,
-    video: "https://www.youtube.com/shorts/IBP9BA22jM0",
+    videoId: "IBP9BA22jM0",
   },
 ];
 
@@ -231,6 +231,7 @@ function Security() {
 }
 
 function Process() {
+  const [playing, setPlaying] = useState<number | null>(null);
   return (
     <section id="processo" className="py-24 md:py-32 bg-card/30">
       <div className="max-w-7xl mx-auto px-6">
@@ -240,31 +241,46 @@ function Process() {
           <p className="text-muted-foreground">Do zero à configuração final, em poucos passos — sem custo de entrada. Assista o vídeo de cada etapa.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((s) => (
-            <a
+          {steps.map((s, i) => (
+            <div
               key={s.n}
-              href={s.video}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group relative rounded-2xl border border-border bg-background/60 hover:border-gold/40 transition overflow-hidden flex flex-col"
             >
-              <div className="relative aspect-[9/12] overflow-hidden">
-                <img
-                  src={s.cover}
-                  alt={s.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
-                  <PlayCircle className="w-14 h-14 text-white/90 drop-shadow-lg" />
-                </div>
-                <div className="absolute top-3 left-3 font-display text-3xl text-white font-semibold drop-shadow-lg">{s.n}</div>
+              <div className="relative aspect-[9/12] overflow-hidden bg-black">
+                {playing === i ? (
+                  <iframe
+                    className="w-full h-full"
+                    src={`https://www.youtube-nocookie.com/embed/${s.videoId}?autoplay=1&playsinline=1`}
+                    title={s.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setPlaying(i)}
+                    className="absolute inset-0 w-full h-full"
+                    aria-label={`Assistir: ${s.title}`}
+                  >
+                    <img
+                      src={s.cover}
+                      alt={s.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
+                      <PlayCircle className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                    </div>
+                    <div className="absolute top-3 left-3 font-display text-3xl text-white font-semibold drop-shadow-lg">{s.n}</div>
+                  </button>
+                )}
               </div>
               <div className="p-6">
                 <h3 className="font-display text-xl mb-2">{s.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>
