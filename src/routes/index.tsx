@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const CTA_URL = "https://pay.hotmart.com/S106665119V?bid=1783553522157";
+const ACCOUNT_URL = "https://www.vtmarkets.net/pt/trade-now/?affid=MjQzNjA3Mzc=&invitecode=wiQxT28t";
 const WA_URL = "https://chat.whatsapp.com/FxkL7gLvmi90xwC78QrxbE";
 
 const steps = [
@@ -32,6 +32,7 @@ function Index() {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <Hero />
+      <Pain />
       <Security />
       <Process />
       <Authority />
@@ -59,8 +60,8 @@ function Nav() {
           <a href="#autoridade" className="hover:text-gold transition">Autoridade</a>
           <a href="#faq" className="hover:text-gold transition">FAQ</a>
         </nav>
-        <a href={CTA_URL} className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
-          Começar por R$67
+        <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
+          Abra sua conta
         </a>
       </div>
     </header>
@@ -76,20 +77,20 @@ function Hero() {
       </div>
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
         <div>
-          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Para o médico que não quer perder dinheiro de novo</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Para quem já foi enganado uma vez e não vai deixar acontecer de novo</p>
           <h1 className="font-display text-5xl md:text-7xl font-medium leading-[1.05] mb-6">
-            Saia da <em className="text-gradient-gold not-italic">frustração</em>.
+            Nunca mais <em className="text-gradient-gold not-italic">entregue</em> seu dinheiro para ninguém.
           </h1>
           <h2 className="font-display text-2xl md:text-3xl text-muted-foreground mb-8 leading-snug">
-            Tenha alguém profissional operando por você.
+            Você já confiou em "gestor", grupo de sinais ou promessa de lucro fácil — e viu seu dinheiro sumir.
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed">
-            Você mantém 100% do controle do seu capital enquanto replica operações reais no mercado internacional.
-            Seu dinheiro fica no seu nome. <span className="text-foreground">Sempre.</span>
+            Aqui é diferente: seu capital nunca sai da sua conta, no seu nome, numa corretora regulada.
+            Eu não recebo, não movimento e não tenho acesso ao seu dinheiro — <span className="text-foreground">nem por um segundo.</span>
           </p>
           <div className="flex flex-wrap gap-4">
-            <a href={CTA_URL} className="btn-gold btn-gold-hover px-7 py-4 rounded-lg font-semibold">
-              Começar agora por R$67 →
+            <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-7 py-4 rounded-lg font-semibold">
+              Abra sua conta →
             </a>
             <a href={WA_URL} className="px-7 py-4 rounded-lg font-semibold border border-gold/40 text-gold hover:bg-gold/10 transition">
               Falar no WhatsApp
@@ -119,6 +120,41 @@ function Hero() {
             />
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Pain() {
+  const items = [
+    "Já colocou dinheiro na mão de um 'gestor' e nunca mais viu retorno real.",
+    "Recebeu print de lucro bonito, mas na hora de sacar veio desculpa.",
+    "Perdeu o acesso à própria conta e ficou sem saber o que aconteceu com o capital.",
+    "Entrou em grupo de sinais, pagou mensalidade, e não sobrou nada além de promessa.",
+  ];
+  return (
+    <section className="py-24 md:py-32 bg-card/20 border-y border-border">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Antes de você continuar</p>
+        <h2 className="font-display text-4xl md:text-5xl mb-6">
+          Você já perdeu dinheiro <em className="text-gradient-gold not-italic">confiando na pessoa errada</em>?
+        </h2>
+        <p className="text-muted-foreground text-lg mb-14 max-w-2xl mx-auto leading-relaxed">
+          O mercado financeiro está cheio de gente prometendo lucro fácil e sumindo com o dinheiro dos outros.
+          Se você já passou por isso, sabe exatamente o que é ficar com medo de tentar de novo.
+        </p>
+        <div className="grid sm:grid-cols-2 gap-5 text-left mb-14">
+          {items.map((t) => (
+            <div key={t} className="flex gap-4 p-6 rounded-xl border border-border bg-background/60">
+              <span className="text-gold text-xl leading-none shrink-0">✕</span>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t}</p>
+            </div>
+          ))}
+        </div>
+        <p className="font-display text-2xl md:text-3xl leading-snug">
+          A única forma segura de replicar operações de outra pessoa é uma em que{" "}
+          <em className="text-gradient-gold not-italic">seu dinheiro nunca sai da sua conta</em>.
+        </p>
       </div>
     </section>
   );
@@ -278,13 +314,13 @@ function FinalCTA() {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background" />
       </div>
       <div className="max-w-3xl mx-auto px-6 text-center">
-        <h2 className="font-display text-4xl md:text-6xl mb-6">Pronto para <em className="text-gradient-gold not-italic">começar?</em></h2>
+        <h2 className="font-display text-4xl md:text-6xl mb-6">Chega de confiar no <em className="text-gradient-gold not-italic">lugar errado</em>.</h2>
         <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
-          Garanta seu acesso ao passo a passo completo e comece a replicar operações de um trader com 12 anos de experiência.
+          Abra sua própria conta, no seu nome, numa corretora regulada — e comece a replicar operações de um trader com 12 anos de experiência sem nunca perder o controle do seu dinheiro.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <a href={CTA_URL} className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg">
-            Quero começar agora
+          <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg">
+            Abra sua conta
           </a>
           <a href={WA_URL} className="px-8 py-4 rounded-lg font-semibold border border-gold/40 text-gold hover:bg-gold/10 transition">
             Falar com suporte
