@@ -3,7 +3,11 @@ import { useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import traderPortrait from "@/assets/trader-portrait.jpg";
 import pammLogo from "@/assets/pamm-logo.png";
-import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck } from "lucide-react";
+import step1Cover from "@/assets/step-1-abrir-conta.jpg";
+import step2Cover from "@/assets/step-2-criar-pamm.jpg";
+import step3Cover from "@/assets/step-3-assinar-contrato.jpg";
+import step4Cover from "@/assets/step-4-saque.jpg";
+import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck, PlayCircle } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -13,10 +17,34 @@ const ACCOUNT_URL = "https://www.vtmarkets.net/pt/trade-now/?affid=MjQzNjA3Mzc=&
 const WA_URL = "https://chat.whatsapp.com/FxkL7gLvmi90xwC78QrxbE";
 
 const steps = [
-  { n: "01", title: "Abra sua conta", desc: "Você abre sua conta internacional numa corretora regulamentada (ASIC, FSCA, FSC) — gratuito, sem custo de entrada." },
-  { n: "02", title: "Vincula ao PAMM", desc: "Autoriza a réplica automática das minhas operações direto na sua conta, no seu nome." },
-  { n: "03", title: "Acompanha em tempo real", desc: "Veja cada operação sendo espelhada, sem precisar saber operar." },
-  { n: "04", title: "Saca quando quiser", desc: "Solicite o saque a qualquer momento, sem prazo de carência." },
+  {
+    n: "01",
+    title: "Abra a conta",
+    desc: "Passo a passo pra abrir sua conta internacional, em seu nome, na VT Markets.",
+    cover: step1Cover,
+    video: "https://www.youtube.com/shorts/nzyo41dosEw",
+  },
+  {
+    n: "02",
+    title: "Crie a conta PAMM",
+    desc: "Veja como configurar sua conta PAMM pra começar a receber as operações replicadas.",
+    cover: step2Cover,
+    video: "https://www.youtube.com/shorts/N--k6rrzEKg",
+  },
+  {
+    n: "03",
+    title: "Assine o contrato",
+    desc: "Como assinar o contrato de gestão usando o login e senha da sua conta PAMM.",
+    cover: step3Cover,
+    video: "https://www.youtube.com/shorts/FQgWdEcnLqo",
+  },
+  {
+    n: "04",
+    title: "Faça seu saque",
+    desc: "O processo completo de saque, direto pra sua conta, sem burocracia.",
+    cover: step4Cover,
+    video: "https://www.youtube.com/shorts/IBP9BA22jM0",
+  },
 ];
 
 const faqs = [
@@ -209,15 +237,34 @@ function Process() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Processo Simples</p>
           <h2 className="font-display text-4xl md:text-5xl mb-6">Quatro passos para replicar <em className="text-gradient-gold not-italic">operações reais</em></h2>
-          <p className="text-muted-foreground">Do zero à configuração final, em poucos passos — sem custo de entrada.</p>
+          <p className="text-muted-foreground">Do zero à configuração final, em poucos passos — sem custo de entrada. Assista o vídeo de cada etapa.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((s) => (
-            <div key={s.n} className="relative p-8 rounded-2xl border border-border bg-background/60 hover:border-gold/40 transition">
-              <div className="font-display text-6xl text-gradient-gold font-semibold mb-4">{s.n}</div>
-              <h3 className="font-display text-2xl mb-3">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-            </div>
+            <a
+              key={s.n}
+              href={s.video}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative rounded-2xl border border-border bg-background/60 hover:border-gold/40 transition overflow-hidden flex flex-col"
+            >
+              <div className="relative aspect-[9/12] overflow-hidden">
+                <img
+                  src={s.cover}
+                  alt={s.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition flex items-center justify-center">
+                  <PlayCircle className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                </div>
+                <div className="absolute top-3 left-3 font-display text-3xl text-white font-semibold drop-shadow-lg">{s.n}</div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-display text-xl mb-2">{s.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+              </div>
+            </a>
           ))}
         </div>
       </div>
