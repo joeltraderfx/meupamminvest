@@ -10,7 +10,7 @@ export default defineConfig({
     server: { entry: "server" },
     ...(isGitHubPages
       ? {
-          pages: [{ path: "/" }, { path: "/quiz" }],
+          pages: [{ path: "/" }, { path: "/quiz" }, { path: "/trading-sem-stress" }, { path: "/ouro-elite-premium" }],
           prerender: {
             enabled: true,
           },
