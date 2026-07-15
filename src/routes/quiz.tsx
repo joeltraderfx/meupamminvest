@@ -195,14 +195,8 @@ const profiles = {
   },
 } as const;
 
-function Quiz() {
-  const [step, setStep] = useState<"form" | number | "result">("form");
-  const [form, setForm] = useState<FormData>({ name: "", phone: "", email: "", profession: "" });
-  const [answers, setAnswers] = useState<(number | null)[]>(Array(questions.length).fill(null));
-
-  const formValid = form.name.trim() && form.phone.trim() && form.email.trim().includes("@") && form.profession.trim();
-
-  const scores: Scores = answers.reduce(
+function computeResult(answersArr: (number | null)[], form: FormData) {
+  const scores: Scores = answersArr.reduce(
     (acc, ans, i) => {
       if (ans === null) return acc;
       const opt = questions[i].options[ans];
@@ -214,14 +208,23 @@ function Quiz() {
     },
     { pamm: 0, curso: 0, aula: 0 }
   );
-
   const topProfile = (Object.keys(scores) as (keyof Scores)[]).reduce((a, b) =>
     scores[b] > scores[a] ? b : a
   );
   const profile = profiles[topProfile];
-
   const waMessage = `Olá! Acabei de fazer o quiz e meu perfil identificado foi: *${profile.title}*.%0A%0ANome: ${form.name}%0ATelefone: ${form.phone}%0AEmail: ${form.email}%0AProfissão: ${form.profession}`;
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`;
+  return { topProfile, profile, waUrl };
+}
+
+function Quiz() {
+  const [step, setStep] = useState<"form" | number | "result">("form");
+  const [form, setForm] = useState<FormData>({ name: "", phone: "", email: "", profession: "" });
+  const [answers, setAnswers] = useState<(number | null)[]>(Array(questions.length).fill(null));
+
+  const formValid = form.name.trim() && form.phone.trim() && form.email.trim().includes("@") && form.profession.trim();
+
+  const { topProfile, profile, waUrl } = computeResult(answers, form);
 
   const currentQuestionIndex = typeof step === "number" ? step : 0;
   const progress = typeof step === "number" ? ((step + 1) / questions.length) * 100 : step === "result" ? 100 : 0;
@@ -233,6 +236,10 @@ function Quiz() {
     if (currentQuestionIndex < questions.length - 1) {
       setStep(currentQuestionIndex + 1);
     } else {
+      // Última pergunta: calcula o resultado com as respostas atualizadas e já abre o WhatsApp
+      // automaticamente, ainda dentro do gesto de clique do usuário (evita bloqueio de pop-up).
+      const { waUrl: finalWaUrl } = computeResult(next, form);
+      window.open(finalWaUrl, "_blank", "noopener,noreferrer");
       setStep("result");
     }
   }
@@ -349,6 +356,9 @@ function Quiz() {
                 <em className="text-gradient-gold not-italic">{profile.title}</em>
               </h2>
               <p className="text-muted-foreground mb-10 leading-relaxed">{profile.desc}</p>
+              <p className="text-xs text-muted-foreground mb-6">
+                Já abrimos o WhatsApp com seu resultado. Se não abriu, use o botão abaixo.
+              </p>
               <div className="flex flex-col gap-3">
                 {topProfile === "pamm" && (
                   <a
@@ -366,7 +376,7 @@ function Quiz() {
                   rel="noopener noreferrer"
                   className="w-full py-4 rounded-lg font-semibold border border-gold/40 text-gold hover:bg-gold/10 transition"
                 >
-                  Falar comigo no WhatsApp
+                  Enviar resultado no WhatsApp
                 </a>
               </div>
             </div>
