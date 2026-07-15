@@ -3,7 +3,7 @@ import { useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import traderPortrait from "@/assets/trader-portrait.jpg";
 import pammLogo from "@/assets/pamm-logo.png";
-import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2 } from "lucide-react";
+import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -21,7 +21,7 @@ const steps = [
 
 const faqs = [
   { q: "Você pega meu dinheiro?", a: "Não. Nunca. Seu capital fica 100% na sua conta, no seu CPF. Eu não tenho acesso — nem por um segundo." },
-  { q: "Posso sacar quando quiser?", a: "Sim. Controle total. O dinheiro é seu, você saca quando desejar, sem restrições." },
+  { q: "Posso sacar quando quiser?", a: "Sim. Sem prazo de carência. O dinheiro é seu, na sua conta, numa corretora regulamentada (ASIC, FSCA e FSC) — você solicita o saque quando quiser." },
   { q: "Preciso saber operar?", a: "Não. Você recebe o passo a passo completo para configurar tudo. As operações são replicadas automaticamente." },
   { q: "Existe risco?", a: "Sim. Mercado envolve risco e não há garantia de lucro. Resultados variam entre pessoas." },
   { q: "Por que pagar R$67?", a: "O valor dá acesso ao passo a passo completo e serve para filtrar pessoas realmente interessadas em começar." },
@@ -162,9 +162,10 @@ function Pain() {
 
 function Security() {
   const items = [
+    { icon: BadgeCheck, title: "Corretora regulamentada internacionalmente", desc: "Licenças ASIC (Austrália), FSCA (África do Sul) e FSC (Maurício), com fundos de clientes sempre segregados." },
     { icon: ShieldCheck, title: "Sempre na sua conta, no seu CPF", desc: "Ninguém mais tem acesso. Você controla tudo." },
-    { icon: Wallet, title: "Depósito direto na corretora", desc: "Sem intermediários. Sem terceiros." },
-    { icon: ArrowDownToLine, title: "Saque quando quiser", desc: "Controle total. Nenhuma restrição." },
+    { icon: Wallet, title: "Sem taxa de administração", desc: "Nada de mensalidade fixa. Eu ganho 50% sobre o lucro real — se você não lucra, eu não ganho nada." },
+    { icon: ArrowDownToLine, title: "Saque livre, sem prazo de carência", desc: "Você pede o saque quando quiser. O dinheiro é seu." },
   ];
   return (
     <section className="py-24 md:py-32 relative">
@@ -245,7 +246,7 @@ function Authority() {
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { t: "Modelo de Ganho Transparente", d: "Eu não recebo seu dinheiro. Eu ganho apenas sobre os resultados das operações. Se você cresce, eu cresço." },
+            { t: "Modelo de Ganho Transparente", d: "Eu não recebo seu dinheiro nem cobro mensalidade. Ganho apenas 50% sobre o lucro real das operações. Se você não lucra, eu não ganho nada." },
             { t: "Quanto preciso investir?", d: "Você pode começar a partir de $300 dólares e escalar conforme desejar. O mínimo é definido pela corretora." },
             { t: "O que é o acesso de R$67?", d: "É o acesso ao passo a passo completo para abrir sua conta, configurar e começar corretamente." },
           ].map((it) => (
