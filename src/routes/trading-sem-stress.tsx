@@ -25,8 +25,7 @@ export const Route = createFileRoute("/trading-sem-stress")({
   }),
 });
 
-const WHATSAPP_NUMBER = "5511978180863";
-const waUrl = (msg: string) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+const CHECKOUT_URL = "https://checkout4.xgrow.com/pt/6cbb1b36-80f4-4323-a739-5f011522d0ef/NTEyMzc=";
 
 const modules = [
   { icon: Calendar, title: "Qual dia operar", desc: "Identifique os dias com maior probabilidade de movimento favorável, e evite os dias que só geram ruído." },
@@ -57,7 +56,7 @@ function TradingSemStress() {
               <div className="text-[9px] tracking-[0.3em] text-gold uppercase">Curso Gravado</div>
             </div>
           </div>
-          <a href={waUrl("Olá! Quero saber mais sobre o curso Trading Sem Stress.")} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
+          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
             Quero garantir minha vaga
           </a>
         </div>
@@ -72,7 +71,7 @@ function TradingSemStress() {
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
             Você não precisa ficar grudado na tela o dia inteiro, nem operar no impulso. Aprenda exatamente qual dia, qual horário, qual região e quais ativos usar pra confirmar sua entrada — no seu ritmo, sem pressão.
           </p>
-          <a href={waUrl("Olá! Quero saber mais sobre o curso Trading Sem Stress.")} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
+          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
             Quero garantir minha vaga →
           </a>
         </div>
@@ -125,7 +124,7 @@ function TradingSemStress() {
           <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
             Aprenda a lógica completa — dia, horário, região e confirmação — e opere com clareza, no seu ritmo.
           </p>
-          <a href={waUrl("Olá! Quero saber mais sobre o curso Trading Sem Stress.")} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
+          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
             Quero garantir minha vaga
           </a>
         </div>
