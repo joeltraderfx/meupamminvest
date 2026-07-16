@@ -7,7 +7,7 @@ import step1Cover from "@/assets/step-1-abrir-conta.jpg";
 import step2Cover from "@/assets/step-2-criar-pamm.jpg";
 import step3Cover from "@/assets/step-3-assinar-contrato.jpg";
 import step4Cover from "@/assets/step-4-saque.jpg";
-import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck, PlayCircle } from "lucide-react";
+import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck, PlayCircle, Target, GraduationCap } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -63,6 +63,7 @@ function Index() {
       <Nav />
       <Hero />
       <Pain />
+      <Perfis />
       <Security />
       <Process />
       <Authority />
@@ -107,16 +108,19 @@ function Hero() {
       </div>
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
         <div className="order-2 lg:order-1">
-          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Para quem já foi enganado uma vez e não vai deixar acontecer de novo</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Gestão profissional para médicos que não têm tempo a perder — e não vão entregar seu dinheiro a mais ninguém</p>
           <h1 className="font-display text-5xl md:text-7xl font-medium leading-[1.05] mb-6">
             Nunca mais <em className="text-gradient-gold not-italic">entregue</em> seu dinheiro para ninguém.
           </h1>
           <h2 className="font-display text-2xl md:text-3xl text-muted-foreground mb-8 leading-snug">
-            Você já confiou em "gestor", grupo de sinais ou promessa de lucro fácil — e viu seu dinheiro sumir.
+            Você já confiou em "gestor", grupo de sinais ou promessa de lucro fácil — e viu seu dinheiro sumir. Ou nunca teve tempo, entre plantões e consultas, pra sequer tentar.
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-6 leading-relaxed">
             Aqui é diferente: seu capital nunca sai da sua conta, no seu nome, numa corretora regulada.
             Eu não recebo, não movimento e não tenho acesso ao seu dinheiro — <span className="text-foreground">nem por um segundo.</span>
+          </p>
+          <p className="font-display text-lg md:text-xl text-gold italic mb-10 leading-snug">
+            Você não precisa confiar seu dinheiro a ninguém para ter resultados no mercado financeiro.
           </p>
           <div className="flex flex-wrap gap-4">
             <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-7 py-4 rounded-lg font-semibold">
@@ -162,17 +166,19 @@ function Pain() {
     "Recebeu print de lucro bonito, mas na hora de sacar veio desculpa.",
     "Perdeu o acesso à própria conta e ficou sem saber o que aconteceu com o capital.",
     "Entrou em grupo de sinais, pagou mensalidade, e não sobrou nada além de promessa.",
+    "Entre plantões, consultas e cirurgias, nunca sobra tempo real pra estudar o mercado.",
+    "Já tentou investir sozinho, se frustrou com a complexidade e desistiu.",
   ];
   return (
     <section className="py-24 md:py-32 bg-card/20 border-y border-border">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Antes de você continuar</p>
         <h2 className="font-display text-4xl md:text-5xl mb-6">
-          Você já perdeu dinheiro <em className="text-gradient-gold not-italic">confiando na pessoa errada</em>?
+          Você já perdeu dinheiro <em className="text-gradient-gold not-italic">confiando na pessoa errada</em> — ou simplesmente não tem tempo pra isso?
         </h2>
         <p className="text-muted-foreground text-lg mb-14 max-w-2xl mx-auto leading-relaxed">
           O mercado financeiro está cheio de gente prometendo lucro fácil e sumindo com o dinheiro dos outros.
-          Se você já passou por isso, sabe exatamente o que é ficar com medo de tentar de novo.
+          E mesmo quando a intenção é boa, poucos médicos têm tempo ou energia sobrando pra estudar gráficos depois de um plantão de 24 horas.
         </p>
         <div className="grid sm:grid-cols-2 gap-5 text-left mb-14">
           {items.map((t) => (
@@ -191,12 +197,42 @@ function Pain() {
   );
 }
 
+function Perfis() {
+  const perfis = [
+    { t: "Recém-formado", d: "Quer começar a construir patrimônio cedo, sem abrir mão do foco na residência ou nos primeiros anos de carreira." },
+    { t: "Já perdeu dinheiro antes", d: "Passou por uma experiência ruim e está em busca de algo transparente antes de voltar a investir." },
+    { t: "Busca mais performance", d: "Já investe, mas quer mais consistência e resultado sem precisar acompanhar o mercado o dia todo." },
+    { t: "Acima de 60 anos", d: "Prioriza renda e qualidade de vida, com uma estrutura simples e sem burocracia pra administrar." },
+  ];
+  return (
+    <section className="py-24 md:py-32 bg-card/20 border-y border-border">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Feito para você</p>
+          <h2 className="font-display text-4xl md:text-5xl mb-4">Para qual desses médicos <em className="text-gradient-gold not-italic">você se identifica?</em></h2>
+          <p className="text-muted-foreground">Pessoas ocupadas, racionais, que valorizam segurança, controle e eficiência com o próprio dinheiro.</p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {perfis.map((p) => (
+            <div key={p.t} className="p-6 rounded-xl border border-border bg-background/60 text-center">
+              <h3 className="font-display text-lg mb-2 text-gold">{p.t}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{p.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Security() {
   const items = [
     { icon: BadgeCheck, title: "Corretora regulamentada internacionalmente", desc: "Licenças ASIC (Austrália), FSCA (África do Sul) e FSC (Maurício), com fundos de clientes sempre segregados." },
     { icon: ShieldCheck, title: "Sempre na sua conta, no seu CPF", desc: "Ninguém mais tem acesso. Você controla tudo." },
+    { icon: Target, title: "Estratégia com foco em preservação de capital", desc: "O objetivo não é risco alto — é consistência e proteção do seu patrimônio no longo prazo." },
     { icon: Wallet, title: "Sem taxa de administração", desc: "Nada de mensalidade fixa. Eu ganho 50% sobre o lucro real — se você não lucra, eu não ganho nada." },
     { icon: ArrowDownToLine, title: "Saque livre, sem prazo de carência", desc: "Você pede o saque quando quiser. O dinheiro é seu." },
+    { icon: GraduationCap, title: "Mentoria direta, se você quiser aprender", desc: "Além da réplica automática, você pode acompanhar e aprender com quem opera — sem obrigação." },
   ];
   return (
     <section className="py-24 md:py-32 relative">
@@ -393,8 +429,11 @@ function FinalCTA() {
       </div>
       <div className="max-w-3xl mx-auto px-6 text-center">
         <h2 className="font-display text-4xl md:text-6xl mb-6">Chega de confiar no <em className="text-gradient-gold not-italic">lugar errado</em>.</h2>
-        <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
+        <p className="text-muted-foreground text-lg mb-4 max-w-2xl mx-auto">
           Abra sua própria conta, no seu nome, numa corretora regulada — e comece a replicar operações de um trader com 12 anos de experiência sem nunca perder o controle do seu dinheiro.
+        </p>
+        <p className="font-display text-gold italic text-lg mb-10">
+          Você não precisa confiar seu dinheiro a ninguém para ter resultados no mercado financeiro.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
           <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg">
