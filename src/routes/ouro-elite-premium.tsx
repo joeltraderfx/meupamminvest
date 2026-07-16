@@ -25,7 +25,7 @@ export const Route = createFileRoute("/ouro-elite-premium")({
   }),
 });
 
-const CHECKOUT_URL = "https://checkout4.xgrow.com/pt/6cbb1b36-80f4-4323-a739-5f011522d0ef/OTUyNTY=";
+const APPLY_URL = "https://chat.whatsapp.com/FCBeBV3SnXq8wj6wq0sXoh";
 
 const includes = [
   { icon: Clock, title: "Aula individual de 1 hora", desc: "Ensino fase a fase, só pra você, no seu horário — sem turma, sem distração." },
@@ -36,9 +36,10 @@ const includes = [
 ];
 
 const faqs = [
+  { q: "Só pagar já garante a vaga?", a: "Não. As vagas são limitadas porque a aula é individual. Todo candidato passa por uma entrevista antes — o objetivo é confirmar se faz sentido pros dois lados, não só receber o pagamento." },
   { q: "Como funciona a aula individual?", a: "É uma aula de 1 hora só sua, ao vivo, fase a fase — você marca o horário comigo e aprende na prática, operando junto." },
   { q: "O que é o indicador Premium?", a: "É uma ferramenta exclusiva que te ajuda a identificar as melhores oportunidades no ouro. A licença é pra 1 conta MT5, válida por 1 ano." },
-  { q: "Preciso ter experiência prévia?", a: "Não. A aula é individual justamente pra se adaptar ao seu nível, do zero ou já com alguma experiência." },
+  { q: "Preciso ter experiência prévia?", a: "Não necessariamente — o que avaliamos na entrevista é o seu perfil e momento, não seu nível técnico." },
   { q: "Como funciona o suporte depois da aula?", a: "Você entra nos canais de Discord e Telegram pra dúvidas técnicas e atualizações, além do grupo exclusivo no WhatsApp pra falar direto comigo." },
 ];
 
@@ -56,23 +57,26 @@ function OuroElitePremium() {
               <div className="text-[9px] tracking-[0.3em] text-gold uppercase">Premium</div>
             </div>
           </div>
-          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
-            Quero minha vaga
+          <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
+            Quero me candidatar
           </a>
         </div>
       </nav>
 
       <section className="pt-40 pb-24 md:pt-48 md:pb-32 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Curso Individual · 1 Hora</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Curso Individual · 1 Hora · Vagas Limitadas</p>
           <h1 className="font-display text-5xl md:text-7xl font-medium leading-[1.05] mb-6">
             <em className="text-gradient-gold not-italic">Ouro Elite</em> Premium
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
             Uma aula individual, fase a fase, direto comigo. Você sai com o indicador Premium na mão e sabendo operar ouro na prática — com suporte contínuo depois da aula.
           </p>
-          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
-            Quero minha vaga →
+          <p className="text-sm md:text-base text-gold font-semibold max-w-xl mx-auto mb-10 leading-relaxed">
+            Não é só pagar e entrar. Todo candidato passa por uma entrevista — a vaga é pra quem tem o perfil certo, não só o valor disponível.
+          </p>
+          <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
+            Quero me candidatar →
           </a>
         </div>
       </section>
@@ -91,6 +95,32 @@ function OuroElitePremium() {
                 <p className="text-sm text-muted-foreground leading-relaxed">{it.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 md:py-32">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Como funciona a seleção</p>
+          <h2 className="font-display text-4xl md:text-5xl mb-6">Não é sobre <em className="text-gradient-gold not-italic">quem paga primeiro</em>.</h2>
+          <p className="text-muted-foreground text-lg mb-12 leading-relaxed">
+            O Ouro Elite Premium tem vagas limitadas porque é individual — e o valor não é o único critério.
+            Antes de entrar, você passa por uma entrevista comigo pra eu entender seu momento, sua disponibilidade e se faz sentido pros dois lados.
+            Só depois disso a vaga é confirmada.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-6 text-left">
+            <div className="p-6 rounded-xl border border-border bg-card/40">
+              <div className="font-display text-3xl text-gold mb-3">01</div>
+              <p className="text-sm text-muted-foreground">Você se candidata pelo grupo do WhatsApp</p>
+            </div>
+            <div className="p-6 rounded-xl border border-border bg-card/40">
+              <div className="font-display text-3xl text-gold mb-3">02</div>
+              <p className="text-sm text-muted-foreground">Passa por uma entrevista rápida comigo</p>
+            </div>
+            <div className="p-6 rounded-xl border border-border bg-card/40">
+              <div className="font-display text-3xl text-gold mb-3">03</div>
+              <p className="text-sm text-muted-foreground">Se aprovado, sua vaga é confirmada e agendamos a aula</p>
+            </div>
           </div>
         </div>
       </section>
@@ -121,11 +151,12 @@ function OuroElitePremium() {
         <div className="max-w-3xl mx-auto px-6 text-center">
           <CheckCircle2 className="w-12 h-12 text-gold mx-auto mb-6" />
           <h2 className="font-display text-4xl md:text-6xl mb-6">Aprenda ouro <em className="text-gradient-gold not-italic">na prática</em>, comigo.</h2>
-          <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg mb-4 max-w-2xl mx-auto">
             1 hora, fase a fase, com indicador Premium incluso e suporte contínuo depois da aula.
           </p>
-          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
-            Quero minha vaga
+          <p className="text-sm text-gold font-semibold mb-10">Vagas limitadas — sujeito a entrevista e aprovação de perfil.</p>
+          <a href={APPLY_URL} target="_blank" rel="noopener noreferrer" className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg inline-block">
+            Quero me candidatar
           </a>
         </div>
       </section>
