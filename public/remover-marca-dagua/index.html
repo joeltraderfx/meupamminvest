@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Removedor de Marca d'Água — 100% no navegador</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #14171b;
+    --line: #23272d;
+    --text: #eef0f2;
+    --muted: #8b929c;
+    --accent: #5eead4;
+    --accent-dim: #1f4d47;
+    --danger: #f97066;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  header {
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+  h1 {
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 60ch;
+    margin: 0;
+  }
+  .lede strong { color: var(--text); font-weight: 600; }
+
+  .callout {
+    margin-top: 20px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    background: var(--panel);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    border-radius: 2px;
+  }
+
+  .step {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+    padding: 24px;
+    margin-top: 20px;
+  }
+  .step-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    background: rgba(94,234,212,0.06);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .step[data-disabled="true"] {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .drop {
+    border: 1.5px dashed var(--line);
+    border-radius: 8px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .drop:hover, .drop.drag {
+    border-color: var(--accent);
+    background: rgba(94,234,212,0.04);
+  }
+  .drop p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .drop input { display: none; }
+
+  .stage {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: 6px;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .stage video, .stage canvas {
+    width: 100%;
+    display: block;
+  }
+  .stage canvas.overlay {
+    position: absolute;
+    top: 0; left: 0;
+    cursor: crosshair;
+  }
+
+  .hint {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .hint b { color: var(--accent); font-weight: 500; }
+
+  .row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: opacity .15s, transform .05s;
+  }
+  button:active { transform: scale(0.98); }
+  button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-primary {
+    background: var(--accent);
+    color: #052220;
+  }
+  .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--text);
+  }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--muted); }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .field select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .progress-wrap {
+    margin-top: 16px;
+    display: none;
+  }
+  .progress-wrap.active { display: block; }
+  .progress-track {
+    height: 4px;
+    background: var(--line);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width .1s linear;
+  }
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .result {
+    margin-top: 16px;
+  }
+  .result video {
+    width: 100%;
+    border-radius: 6px;
+    background: #000;
+  }
+
+  footer {
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Ferramenta local · sem upload para servidor</p>
+    <h1>Removedor de marca d'água</h1>
+    <p class="lede">
+      Remove uma marca d'água <strong>estática</strong> (posição fixa) de um vídeo, direto no seu navegador.
+      O arquivo nunca sai do seu computador — todo o processamento acontece localmente.
+    </p>
+    <div class="callout">
+      <b>Como funciona:</b> a área selecionada é reconstruída esticando as cores das bordas ao redor dela.
+      Funciona bem em fundos lisos ou com pouca textura. Em fundos muito complexos ou com bastante
+      movimento, o resultado pode ficar borrado — isso é uma limitação real de processar vídeo só com
+      JavaScript no navegador, sem um modelo de IA pesado rodando em servidor. Use apenas em vídeos
+      seus ou que você tenha autorização para editar.
+    </div>
+  </header>
+
+  <div class="step" id="step1">
+    <div class="step-head">
+      <span class="step-num">01</span>
+      <p class="step-title">Escolha o vídeo</p>
+    </div>
+    <div class="drop" id="drop">
+      <input type="file" id="fileInput" accept="video/*">
+      <p>Arraste um vídeo aqui, ou clique para selecionar<br>(MP4, WebM — processado localmente)</p>
+    </div>
+  </div>
+
+  <div class="step" id="step2" data-disabled="true">
+    <div class="step-head">
+      <span class="step-num">02</span>
+      <p class="step-title">Marque a área da marca d'água</p>
+    </div>
+    <div class="stage" id="stage">
+      <video id="video" muted playsinline></video>
+      <canvas class="overlay" id="overlay"></canvas>
+    </div>
+    <p class="hint">Clique e arraste sobre o vídeo para desenhar o retângulo. Seleção atual: <b id="boxLabel">nenhuma</b></p>
+  </div>
+
+  <div class="step" id="step3" data-disabled="true">
+    <div class="step-head">
+      <span class="step-num">03</span>
+      <p class="step-title">Processar</p>
+    </div>
+    <div class="row">
+      <button class="btn-primary" id="processBtn">Remover marca d'água</button>
+      <button class="btn-ghost" id="resetBtn">Recomeçar</button>
+      <div class="field">
+        <label for="qualitySelect">qualidade:</label>
+        <select id="qualitySelect">
+          <option value="8000000">alta</option>
+          <option value="4000000" selected>média</option>
+          <option value="2000000">baixa (mais rápido)</option>
+        </select>
+      </div>
+    </div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-label" id="progressLabel">processando quadro a quadro — o vídeo passa em tempo real, então um vídeo de 1 minuto leva ~1 minuto</p>
+    </div>
+    <div class="result" id="result" style="display:none">
+      <video id="resultVideo" controls></video>
+      <div class="row">
+        <a id="downloadLink" download="video_sem_marca_dagua.webm"><button class="btn-primary">Baixar vídeo</button></a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Processamento 100% local via Canvas API + MediaRecorder do navegador. Nenhum arquivo é enviado para
+    nenhum servidor. Saída em formato WebM. Para marcas d'água em movimento ou fundos complexos,
+    considere uma ferramenta com IA de inpainting dedicada.
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  const fileInput = document.getElementById('fileInput');
+  const drop = document.getElementById('drop');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const video = document.getElementById('video');
+  const overlay = document.getElementById('overlay');
+  const octx = overlay.getContext('2d');
+  const boxLabel = document.getElementById('boxLabel');
+  const processBtn = document.getElementById('processBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const qualitySelect = document.getElementById('qualitySelect');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const resultBox = document.getElementById('result');
+  const resultVideo = document.getElementById('resultVideo');
+  const downloadLink = document.getElementById('downloadLink');
+
+  let box = null; // {x,y,w,h} in native video pixel coords
+  let dragging = false;
+  let dragStart = null;
+  let scale = 1;
+  let objectUrl = null;
+
+  function resetAll() {
+    box = null;
+    boxLabel.textContent = 'nenhuma';
+    step2.dataset.disabled = 'true';
+    step3.dataset.disabled = 'true';
+    resultBox.style.display = 'none';
+    progressWrap.classList.remove('active');
+    progressFill.style.width = '0%';
+    fileInput.value = '';
+    if (objectUrl) { URL.revokeObjectURL(objectUrl); objectUrl = null; }
+    video.removeAttribute('src');
+  }
+  resetBtn.addEventListener('click', resetAll);
+
+  // ---- File loading ----
+  drop.addEventListener('click', () => fileInput.click());
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    drop.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files && fileInput.files[0]) loadFile(fileInput.files[0]);
+  });
+
+  function loadFile(file) {
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(file);
+    video.src = objectUrl;
+    video.onloadedmetadata = () => {
+      video.currentTime = Math.min(0.5, video.duration / 4);
+    };
+    video.onseeked = () => {
+      sizeOverlay();
+      step2.dataset.disabled = 'false';
+      video.onseeked = null;
+    };
+  }
+
+  function sizeOverlay() {
+    const rect = video.getBoundingClientRect();
+    overlay.width = video.videoWidth;
+    overlay.height = video.videoHeight;
+    overlay.style.width = rect.width + 'px';
+    overlay.style.height = rect.height + 'px';
+    scale = video.videoWidth / rect.width;
+    drawOverlay();
+  }
+  window.addEventListener('resize', () => { if (video.videoWidth) sizeOverlay(); });
+
+  function drawOverlay() {
+    octx.clearRect(0, 0, overlay.width, overlay.height);
+    if (box) {
+      octx.strokeStyle = '#5eead4';
+      octx.lineWidth = Math.max(2, overlay.width * 0.003);
+      octx.strokeRect(box.x, box.y, box.w, box.h);
+      octx.fillStyle = 'rgba(94,234,212,0.15)';
+      octx.fillRect(box.x, box.y, box.w, box.h);
+    }
+  }
+
+  function overlayPoint(e) {
+    const rect = overlay.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: (clientX - rect.left) * scale,
+      y: (clientY - rect.top) * scale,
+    };
+  }
+
+  function startDrag(e) {
+    if (step2.dataset.disabled === 'true') return;
+    dragging = true;
+    dragStart = overlayPoint(e);
+  }
+  function moveDrag(e) {
+    if (!dragging) return;
+    const p = overlayPoint(e);
+    const x = Math.min(dragStart.x, p.x);
+    const y = Math.min(dragStart.y, p.y);
+    const w = Math.abs(p.x - dragStart.x);
+    const h = Math.abs(p.y - dragStart.y);
+    box = { x, y, w, h };
+    drawOverlay();
+  }
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    if (box && box.w > 4 && box.h > 4) {
+      box.x = Math.round(box.x); box.y = Math.round(box.y);
+      box.w = Math.round(box.w); box.h = Math.round(box.h);
+      boxLabel.textContent = `x:${box.x} y:${box.y} ${box.w}×${box.h}px`;
+      step3.dataset.disabled = 'false';
+    }
+  }
+  overlay.addEventListener('mousedown', startDrag);
+  overlay.addEventListener('mousemove', moveDrag);
+  window.addEventListener('mouseup', endDrag);
+  overlay.addEventListener('touchstart', startDrag, { passive: true });
+  overlay.addEventListener('touchmove', moveDrag, { passive: true });
+  overlay.addEventListener('touchend', endDrag);
+
+  // ---- Fill algorithm: bilinear stretch from box borders ----
+  // For each pixel inside the box, blend between the left/right edge column
+  // colors and top/bottom edge row colors, weighted by relative position.
+  function fillBox(imageData, box) {
+    const { data, width } = imageData;
+    const x0 = Math.max(0, Math.floor(box.x));
+    const y0 = Math.max(0, Math.floor(box.y));
+    const x1 = Math.min(width - 1, Math.ceil(box.x + box.w));
+    const y1 = Math.min(imageData.height - 1, Math.ceil(box.y + box.h));
+    const w = x1 - x0;
+    const h = y1 - y0;
+    if (w <= 0 || h <= 0) return;
+
+    const idx = (x, y) => (y * width + x) * 4;
+
+    for (let y = y0; y <= y1; y++) {
+      const ty = h === 0 ? 0 : (y - y0) / h;
+      const leftI = idx(x0, y), rightI = idx(x1, y);
+      for (let x = x0; x <= x1; x++) {
+        const tx = w === 0 ? 0 : (x - x0) / w;
+        const topI = idx(x, y0), botI = idx(x, y1);
+
+        for (let c = 0; c < 3; c++) {
+          const horiz = data[leftI + c] * (1 - tx) + data[rightI + c] * tx;
+          const vert = data[topI + c] * (1 - ty) + data[botI + c] * ty;
+          data[idx(x, y) + c] = (horiz + vert) / 2;
+        }
+      }
+    }
+  }
+
+  // ---- Processing pipeline ----
+  processBtn.addEventListener('click', async () => {
+    if (!box) return;
+    processBtn.disabled = true;
+    resetBtn.disabled = true;
+    progressWrap.classList.add('active');
+    resultBox.style.display = 'none';
+
+    const workCanvas = document.createElement('canvas');
+    workCanvas.width = video.videoWidth;
+    workCanvas.height = video.videoHeight;
+    const wctx = workCanvas.getContext('2d', { willReadFrequently: true });
+
+    // Snapshot the current frame first so we know the border colors are sampled
+    // fresh from the box's true neighboring pixels every frame (done live below).
+
+    const videoStream = video.captureStream ? video.captureStream() : video.mozCaptureStream();
+    const audioTracks = videoStream.getAudioTracks();
+    const canvasStream = workCanvas.captureStream(30);
+    const outStream = new MediaStream([
+      ...canvasStream.getVideoTracks(),
+      ...audioTracks,
+    ]);
+
+    const bitrate = parseInt(qualitySelect.value, 10);
+    let mimeType = 'video/webm;codecs=vp9';
+    if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8';
+    if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+
+    const recorder = new MediaRecorder(outStream, { mimeType, videoBitsPerSecond: bitrate });
+    const chunks = [];
+    recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+
+    let rafId = null;
+    function drawLoop() {
+      wctx.drawImage(video, 0, 0, workCanvas.width, workCanvas.height);
+      const frame = wctx.getImageData(0, 0, workCanvas.width, workCanvas.height);
+      fillBox(frame, box);
+      wctx.putImageData(frame, 0, 0);
+      if (video.duration) {
+        const pct = Math.min(100, (video.currentTime / video.duration) * 100);
+        progressFill.style.width = pct.toFixed(1) + '%';
+        progressLabel.textContent = `processando — ${pct.toFixed(0)}%`;
+      }
+      if (!video.ended && !video.paused) {
+        rafId = requestAnimationFrame(drawLoop);
+      }
+    }
+
+    const finishProcessing = () => new Promise((resolve) => {
+      video.onended = () => {
+        cancelAnimationFrame(rafId);
+        recorder.stop();
+      };
+      recorder.onstop = () => resolve();
+      video.currentTime = 0;
+      video.play();
+      recorder.start(200);
+      requestAnimationFrame(drawLoop);
+    });
+
+    await finishProcessing();
+
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    resultVideo.src = url;
+    downloadLink.href = url;
+    resultBox.style.display = 'block';
+    progressLabel.textContent = 'concluído';
+    progressFill.style.width = '100%';
+
+    processBtn.disabled = false;
+    resetBtn.disabled = false;
+  });
+})();
+</script>
+</body>
+</html>
