@@ -241,6 +241,124 @@
     border-top: 1px solid var(--line);
     padding-top: 20px;
   }
+
+  /* ---- Créditos & paywall ---- */
+  .credits-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+  }
+  .credits-bar .balance { color: var(--muted); }
+  .credits-bar .balance b { color: var(--accent); font-family: var(--mono); }
+  .credits-bar .actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .credits-bar input[type=text] {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    width: 150px;
+  }
+  .btn-small {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    max-width: 480px;
+    width: 100%;
+    padding: 28px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 { font-size: 20px; margin: 0 0 6px; }
+  .modal .sub { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+  .modal .close-x {
+    float: right;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .pkg-list { display: flex; flex-direction: column; gap: 10px; }
+  .pkg-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color .15s;
+  }
+  .pkg-card:hover { border-color: var(--accent); }
+  .pkg-card .name { font-weight: 600; font-size: 14px; }
+  .pkg-card .unit { color: var(--muted); font-size: 12px; font-family: var(--mono); }
+  .pkg-card .price { font-family: var(--mono); color: var(--accent); font-size: 16px; }
+
+  .pix-box { text-align: center; }
+  .pix-box img { width: 220px; height: 220px; border-radius: 8px; margin: 0 auto 16px; display: block; }
+  .pix-copy {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    word-break: break-all;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .pix-status {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+  .pix-status.approved { color: var(--accent); }
+  .token-reveal {
+    margin-top: 16px;
+    border: 1px solid var(--accent-dim);
+    background: rgba(94,234,212,0.06);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .token-reveal .code {
+    font-family: var(--mono);
+    font-size: 20px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin: 8px 0 12px;
+  }
+  .token-reveal p { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
 </style>
 </head>
 <body>
@@ -264,6 +382,55 @@
       tenha autorização para editar.
     </div>
   </header>
+
+  <div class="credits-bar">
+    <div class="balance" id="creditsBalance">Carregando seus créditos…</div>
+    <div class="actions">
+      <input type="text" id="tokenInput" placeholder="Colar código (CT-XXXX-XXXX)">
+      <button class="btn-ghost btn-small" id="redeemBtn">Usar código</button>
+      <button class="btn-primary btn-small" id="buyBtn">Comprar créditos</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <button class="close-x" id="modalClose">×</button>
+      <div id="modalPackages">
+        <h2>Comprar créditos</h2>
+        <p class="sub">Pagamento via Pix. Assim que aprovado, você recebe um código para usar aqui.</p>
+        <div class="pkg-list">
+          <div class="pkg-card" data-package="pack100">
+            <div><div class="name">100 vídeos</div><div class="unit">R$ 0,10 / vídeo</div></div>
+            <div class="price">R$ 10,00</div>
+          </div>
+          <div class="pkg-card" data-package="pack300">
+            <div><div class="name">300 vídeos</div><div class="unit">R$ 0,08 / vídeo</div></div>
+            <div class="price">R$ 24,00</div>
+          </div>
+          <div class="pkg-card" data-package="pack500">
+            <div><div class="name">500 vídeos</div><div class="unit">R$ 0,05 / vídeo</div></div>
+            <div class="price">R$ 25,00</div>
+          </div>
+        </div>
+      </div>
+      <div id="modalPix" style="display:none">
+        <h2>Pague com Pix</h2>
+        <p class="sub">Abra o app do seu banco e escaneie, ou copie o código abaixo.</p>
+        <div class="pix-box">
+          <img id="pixQrImg" alt="QR Code Pix">
+          <div class="pix-copy" id="pixCopyText"></div>
+          <button class="btn-ghost btn-small" id="pixCopyBtn">Copiar código Pix</button>
+          <p class="pix-status" id="pixStatus">Aguardando pagamento…</p>
+        </div>
+        <div class="token-reveal" id="tokenReveal" style="display:none">
+          <p>Pagamento aprovado! Guarde este código — ele é a sua chave de acesso aos créditos:</p>
+          <div class="code" id="revealedToken"></div>
+          <button class="btn-primary btn-small" id="copyTokenBtn">Copiar código</button>
+          <button class="btn-ghost btn-small" id="useNowBtn">Usar agora</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="step" id="step1">
     <div class="step-head">
@@ -330,6 +497,182 @@
 
 <script>
 (function () {
+  // ===========================================================================
+  // IMPORTANTE: troque essa URL pela URL real do seu backend depois do deploy
+  // no Render (ex: "https://cleantake-backend.onrender.com")
+  // ===========================================================================
+  const API_BASE = "https://SEU-BACKEND.onrender.com";
+  const FREE_TRIAL_LIMIT = 10;
+
+  // ---------------------------------------------------------------------------
+  // Créditos: teste grátis (10 vídeos por navegador) + código pago opcional
+  // ---------------------------------------------------------------------------
+  const CreditsManager = (function () {
+    const el = {
+      balance: document.getElementById('creditsBalance'),
+      tokenInput: document.getElementById('tokenInput'),
+      redeemBtn: document.getElementById('redeemBtn'),
+      buyBtn: document.getElementById('buyBtn'),
+      modalBackdrop: document.getElementById('modalBackdrop'),
+      modalClose: document.getElementById('modalClose'),
+      modalPackages: document.getElementById('modalPackages'),
+      modalPix: document.getElementById('modalPix'),
+      pixQrImg: document.getElementById('pixQrImg'),
+      pixCopyText: document.getElementById('pixCopyText'),
+      pixCopyBtn: document.getElementById('pixCopyBtn'),
+      pixStatus: document.getElementById('pixStatus'),
+      tokenReveal: document.getElementById('tokenReveal'),
+      revealedToken: document.getElementById('revealedToken'),
+      copyTokenBtn: document.getElementById('copyTokenBtn'),
+      useNowBtn: document.getElementById('useNowBtn'),
+    };
+
+    let pollTimer = null;
+
+    function freeUsed() {
+      return parseInt(localStorage.getItem('cleantake_free_used') || '0', 10);
+    }
+    function setFreeUsed(n) {
+      localStorage.setItem('cleantake_free_used', String(n));
+    }
+    function getToken() {
+      return localStorage.getItem('cleantake_token') || null;
+    }
+    function setToken(t) {
+      localStorage.setItem('cleantake_token', t);
+    }
+
+    async function refreshBalance() {
+      const token = getToken();
+      if (token) {
+        try {
+          const res = await fetch(`${API_BASE}/api/credits/${encodeURIComponent(token)}`);
+          if (res.ok) {
+            const data = await res.json();
+            el.balance.innerHTML = `Código <b>${token}</b> — <b>${data.remaining}</b> créditos restantes`;
+            return;
+          }
+        } catch (e) { /* segue pro fallback abaixo */ }
+      }
+      const remaining = Math.max(0, FREE_TRIAL_LIMIT - freeUsed());
+      el.balance.innerHTML = remaining > 0
+        ? `Teste grátis: <b>${remaining}</b> de ${FREE_TRIAL_LIMIT} vídeos restantes`
+        : `Seu teste grátis acabou. Compre créditos ou use um código.`;
+    }
+
+    // Retorna true se pode processar (e já reserva o crédito); false se bloqueado.
+    async function reserveCredit() {
+      const token = getToken();
+      if (token) {
+        try {
+          const res = await fetch(`${API_BASE}/api/consume`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          });
+          if (res.ok) { await refreshBalance(); return true; }
+          if (res.status === 402) { openModal(); return false; }
+          // erro de rede/servidor: cai pro teste grátis se ainda houver saldo, senão bloqueia
+        } catch (e) { /* segue pro fallback */ }
+      }
+      if (freeUsed() < FREE_TRIAL_LIMIT) {
+        setFreeUsed(freeUsed() + 1);
+        await refreshBalance();
+        return true;
+      }
+      openModal();
+      return false;
+    }
+
+    function openModal() {
+      el.modalPackages.style.display = 'block';
+      el.modalPix.style.display = 'none';
+      el.modalBackdrop.classList.add('open');
+    }
+    function closeModal() {
+      el.modalBackdrop.classList.remove('open');
+      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    }
+
+    async function startCheckout(packageId) {
+      el.modalPackages.style.display = 'none';
+      el.modalPix.style.display = 'block';
+      el.tokenReveal.style.display = 'none';
+      el.pixStatus.textContent = 'Gerando cobrança Pix…';
+      el.pixStatus.className = 'pix-status';
+      el.pixQrImg.src = '';
+      el.pixCopyText.textContent = '';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/checkout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ packageId }),
+        });
+        if (!res.ok) throw new Error('Falha ao gerar cobrança');
+        const data = await res.json();
+
+        el.pixQrImg.src = `data:image/png;base64,${data.qrCodeBase64}`;
+        el.pixCopyText.textContent = data.qrCode;
+        el.pixStatus.textContent = 'Aguardando pagamento…';
+
+        pollTimer = setInterval(async () => {
+          try {
+            const r = await fetch(`${API_BASE}/api/payment-status/${data.paymentId}`);
+            const s = await r.json();
+            if (s.status === 'approved' && s.token) {
+              clearInterval(pollTimer);
+              pollTimer = null;
+              el.pixStatus.textContent = 'Pagamento aprovado ✓';
+              el.pixStatus.className = 'pix-status approved';
+              el.revealedToken.textContent = s.token;
+              el.tokenReveal.style.display = 'block';
+              window.__lastPurchasedToken = s.token;
+            }
+          } catch (e) { /* tenta de novo no próximo tick */ }
+        }, 3000);
+      } catch (e) {
+        el.pixStatus.textContent = 'Erro ao gerar o pagamento. Feche e tente novamente.';
+      }
+    }
+
+    el.buyBtn.addEventListener('click', openModal);
+    el.modalClose.addEventListener('click', closeModal);
+    el.modalBackdrop.addEventListener('click', (e) => { if (e.target === el.modalBackdrop) closeModal(); });
+
+    document.querySelectorAll('.pkg-card').forEach((card) => {
+      card.addEventListener('click', () => startCheckout(card.dataset.package));
+    });
+
+    el.pixCopyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(el.pixCopyText.textContent);
+      el.pixCopyBtn.textContent = 'Copiado!';
+      setTimeout(() => (el.pixCopyBtn.textContent = 'Copiar código Pix'), 1500);
+    });
+    el.copyTokenBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(el.revealedToken.textContent);
+      el.copyTokenBtn.textContent = 'Copiado!';
+      setTimeout(() => (el.copyTokenBtn.textContent = 'Copiar código'), 1500);
+    });
+    el.useNowBtn.addEventListener('click', () => {
+      if (window.__lastPurchasedToken) setToken(window.__lastPurchasedToken);
+      closeModal();
+      refreshBalance();
+    });
+
+    el.redeemBtn.addEventListener('click', () => {
+      const t = el.tokenInput.value.trim().toUpperCase();
+      if (!t) return;
+      setToken(t);
+      el.tokenInput.value = '';
+      refreshBalance();
+    });
+
+    refreshBalance();
+
+    return { reserveCredit, refreshBalance };
+  })();
+
   const fileInput = document.getElementById('fileInput');
   const drop = document.getElementById('drop');
   const step2 = document.getElementById('step2');
@@ -493,6 +836,10 @@
   // ---- Processing pipeline ----
   processBtn.addEventListener('click', async () => {
     if (!box) return;
+
+    const canProceed = await CreditsManager.reserveCredit();
+    if (!canProceed) return; // modal de compra já foi aberto pelo CreditsManager
+
     processBtn.disabled = true;
     resetBtn.disabled = true;
     progressWrap.classList.add('active');
