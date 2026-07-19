@@ -1,0 +1,38 @@
+name: Atualizar Resultados (mensal)
+
+on:
+  schedule:
+    # Todo dia 1º do mês, às 09:00 (horário de Brasília, UTC-3) = 12:00 UTC
+    - cron: "0 12 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Busca dados reais via MetaApi e recalcula
+        env:
+          METAAPI_TOKEN: ${{ secrets.METAAPI_TOKEN }}
+          METAAPI_ACCOUNT_ID: ${{ secrets.METAAPI_ACCOUNT_ID }}
+        run: node scripts/resultados/update-from-metaapi.mjs
+
+      - name: Publica se algo mudou
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet src/data/resultados.json; then
+            echo "Nenhuma mudança nos resultados — nada pra publicar."
+          else
+            git add src/data/resultados.json
+            git commit -m "Atualiza resultados automaticamente ($(date -u +%Y-%m-%d))"
+            git push
+          fi

@@ -1,0 +1,16 @@
+{
+  "initialBalance": 10000.00,
+  "currentBalance": 14573.39,
+  "cumulativeReturnPct": 45.73,
+  "positiveMonthsStreak": 7,
+  "lastUpdated": "2026-07-19",
+  "months": [
+    { "label": "Janeiro/26", "returnPct": 2.74, "drawdownPct": 0.43, "trades": 35, "wins": 18, "losses": 17 },
+    { "label": "Fevereiro/26", "returnPct": 6.70, "drawdownPct": 0.55, "trades": 37, "wins": 26, "losses": 11 },
+    { "label": "Março/26", "returnPct": 4.84, "drawdownPct": 0.77, "trades": 47, "wins": 30, "losses": 17 },
+    { "label": "Abril/26", "returnPct": 6.38, "drawdownPct": 0.38, "trades": 43, "wins": 30, "losses": 13 },
+    { "label": "Maio/26", "returnPct": 7.43, "drawdownPct": 0.40, "trades": 31, "wins": 22, "losses": 9 },
+    { "label": "Junho/26", "returnPct": 5.86, "drawdownPct": 0.67, "trades": 44, "wins": 26, "losses": 18 },
+    { "label": "Julho/26*", "returnPct": 4.81, "drawdownPct": 0.50, "trades": 27, "wins": 20, "losses": 7, "partial": true }
+  ]
+}

@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TradingSemStressRouteImport } from './routes/trading-sem-stress'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as OuroElitePremiumRouteImport } from './routes/ouro-elite-premium'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TradingSemStressRoute = TradingSemStressRouteImport.update({
+  id: '/trading-sem-stress',
+  path: '/trading-sem-stress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OuroElitePremiumRoute = OuroElitePremiumRouteImport.update({
+  id: '/ouro-elite-premium',
+  path: '/ouro-elite-premium',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ouro-elite-premium': typeof OuroElitePremiumRoute
+  '/quiz': typeof QuizRoute
+  '/trading-sem-stress': typeof TradingSemStressRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ouro-elite-premium': typeof OuroElitePremiumRoute
+  '/quiz': typeof QuizRoute
+  '/trading-sem-stress': typeof TradingSemStressRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ouro-elite-premium': typeof OuroElitePremiumRoute
+  '/quiz': typeof QuizRoute
+  '/trading-sem-stress': typeof TradingSemStressRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/ouro-elite-premium' | '/quiz' | '/trading-sem-stress'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/ouro-elite-premium' | '/quiz' | '/trading-sem-stress'
+  id: '__root__' | '/' | '/ouro-elite-premium' | '/quiz' | '/trading-sem-stress'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OuroElitePremiumRoute: typeof OuroElitePremiumRoute
+  QuizRoute: typeof QuizRoute
+  TradingSemStressRoute: typeof TradingSemStressRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trading-sem-stress': {
+      id: '/trading-sem-stress'
+      path: '/trading-sem-stress'
+      fullPath: '/trading-sem-stress'
+      preLoaderRoute: typeof TradingSemStressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ouro-elite-premium': {
+      id: '/ouro-elite-premium'
+      path: '/ouro-elite-premium'
+      fullPath: '/ouro-elite-premium'
+      preLoaderRoute: typeof OuroElitePremiumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +104,20 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OuroElitePremiumRoute: OuroElitePremiumRoute,
+  QuizRoute: QuizRoute,
+  TradingSemStressRoute: TradingSemStressRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

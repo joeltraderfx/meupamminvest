@@ -8,6 +8,7 @@ import step2Cover from "@/assets/step-2-criar-pamm.jpg";
 import step3Cover from "@/assets/step-3-assinar-contrato.jpg";
 import step4Cover from "@/assets/step-4-saque.jpg";
 import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck, PlayCircle, Target, GraduationCap } from "lucide-react";
+import resultadosData from "@/data/resultados.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -377,20 +378,13 @@ function Authority() {
 }
 
 function Resultados() {
-  // Dados extraídos e calculados a partir do relatório oficial da VT Markets
-  // (conta 27754781, saldo inicial $10.000, saldo final $14.573,39 — valores
-  // conferidos batendo exatamente com o "Lucro Líquido" do relatório).
-  // "Risco" = drawdown máximo do mês (maior queda entre um pico e um vale do
-  // saldo dentro do mês), o jeito padrão do mercado de medir risco de um histórico.
-  const meses = [
-    { m: "Janeiro/26", lucro: 2.74, risco: 0.43, ops: 35, v: 18, d: 17 },
-    { m: "Fevereiro/26", lucro: 6.70, risco: 0.55, ops: 37, v: 26, d: 11 },
-    { m: "Março/26", lucro: 4.84, risco: 0.77, ops: 47, v: 30, d: 17 },
-    { m: "Abril/26", lucro: 6.38, risco: 0.38, ops: 43, v: 30, d: 13 },
-    { m: "Maio/26", lucro: 7.43, risco: 0.40, ops: 31, v: 22, d: 9 },
-    { m: "Junho/26", lucro: 5.86, risco: 0.67, ops: 44, v: 26, d: 18 },
-    { m: "Julho/26*", lucro: 4.81, risco: 0.50, ops: 27, v: 20, d: 7 },
-  ];
+  // Dados carregados de src/data/resultados.json — esse arquivo é atualizado
+  // automaticamente todo mês (ver .github/workflows/atualizar-resultados.yml),
+  // extraído direto do histórico real da conta via MetaApi (senha de investidor,
+  // somente leitura). "Risco" = drawdown máximo do mês (maior queda entre um
+  // pico e um vale do saldo dentro do mês).
+  const { initialBalance, currentBalance, cumulativeReturnPct, positiveMonthsStreak, months, lastUpdated } = resultadosData;
+  const fmtUsd = (n: number) => `$${n.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
   return (
     <section id="resultados" className="py-24 md:py-32 bg-card/20 border-y border-border">
@@ -399,15 +393,15 @@ function Resultados() {
           <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Histórico Real e Verificável</p>
           <h2 className="font-display text-4xl md:text-5xl mb-4">Resultados <em className="text-gradient-gold not-italic">mês a mês</em>, sem maquiagem</h2>
           <p className="text-muted-foreground">
-            Extraído direto do relatório oficial da corretora (conta real, XAUUSD). Lucro e risco calculados sobre o saldo em cascata — cada mês parte do resultado real do mês anterior, sem embelezar a média.
+            Extraído direto do histórico oficial da corretora (conta real, XAUUSD). Lucro e risco calculados sobre o saldo em cascata — cada mês parte do resultado real do mês anterior, sem embelezar a média.
           </p>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-6 mb-14">
           {[
-            { n: "$10.000 → $14.573", l: "Saldo Jan–Jul 2026" },
-            { n: "+45,73%", l: "Retorno Acumulado" },
-            { n: "7", l: "Meses Consecutivos Positivos" },
+            { n: `${fmtUsd(initialBalance)} → ${fmtUsd(currentBalance)}`, l: "Saldo Jan–Hoje" },
+            { n: `+${cumulativeReturnPct.toFixed(2).replace(".", ",")}%`, l: "Retorno Acumulado" },
+            { n: String(positiveMonthsStreak), l: "Meses Consecutivos Positivos" },
           ].map((s) => (
             <div key={s.l} className="text-center p-8 rounded-2xl border border-gold/20 bg-background/60">
               <div className="font-display text-3xl md:text-4xl text-gradient-gold font-semibold mb-2">{s.n}</div>
@@ -428,13 +422,13 @@ function Resultados() {
               </tr>
             </thead>
             <tbody>
-              {meses.map((row) => (
-                <tr key={row.m} className="border-t border-border">
-                  <td className="p-4 font-display">{row.m}</td>
-                  <td className="p-4 text-right font-display text-gold font-semibold">+{row.lucro.toFixed(2)}%</td>
-                  <td className="p-4 text-right text-muted-foreground">{row.risco.toFixed(2)}%</td>
-                  <td className="p-4 text-right text-muted-foreground hidden sm:table-cell">{row.ops}</td>
-                  <td className="p-4 text-right text-muted-foreground hidden md:table-cell">{row.v}V / {row.d}D</td>
+              {months.map((row) => (
+                <tr key={row.label} className="border-t border-border">
+                  <td className="p-4 font-display">{row.label}</td>
+                  <td className="p-4 text-right font-display text-gold font-semibold">+{row.returnPct.toFixed(2)}%</td>
+                  <td className="p-4 text-right text-muted-foreground">{row.drawdownPct.toFixed(2)}%</td>
+                  <td className="p-4 text-right text-muted-foreground hidden sm:table-cell">{row.trades}</td>
+                  <td className="p-4 text-right text-muted-foreground hidden md:table-cell">{row.wins}V / {row.losses}D</td>
                 </tr>
               ))}
             </tbody>
@@ -442,7 +436,8 @@ function Resultados() {
         </div>
 
         <p className="text-xs text-muted-foreground text-center mt-6 max-w-2xl mx-auto leading-relaxed">
-          *Julho/26 ainda está em andamento no relatório (dados até dia 17). Histórico de uma conta real, verificável junto à corretora.
+          {months.some((m) => m.partial) && "*O mês em andamento reflete os dados disponíveis até o momento da última atualização. "}
+          Histórico de uma conta real, verificável junto à corretora. Atualizado automaticamente todo mês (última atualização: {new Date(lastUpdated).toLocaleDateString("pt-BR")}).
           Resultado passado não garante resultado futuro — mercado envolve risco e os números podem variar entre contas e períodos.
         </p>
       </div>
