@@ -67,6 +67,7 @@ function Index() {
       <Security />
       <Process />
       <Authority />
+      <Resultados />
       <Transparency />
       <FAQ />
       <FinalCTA />
@@ -88,6 +89,7 @@ function Nav() {
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
           <a href="#processo" className="hover:text-gold transition">Processo</a>
+          <a href="#resultados" className="hover:text-gold transition">Resultados</a>
           <a href="#autoridade" className="hover:text-gold transition">Autoridade</a>
           <a href="#faq" className="hover:text-gold transition">FAQ</a>
         </nav>
@@ -369,6 +371,80 @@ function Authority() {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Resultados() {
+  // Dados extraídos e calculados a partir do relatório oficial da VT Markets
+  // (conta 27754781, saldo inicial $10.000, saldo final $14.573,39 — valores
+  // conferidos batendo exatamente com o "Lucro Líquido" do relatório).
+  // "Risco" = drawdown máximo do mês (maior queda entre um pico e um vale do
+  // saldo dentro do mês), o jeito padrão do mercado de medir risco de um histórico.
+  const meses = [
+    { m: "Janeiro/26", lucro: 2.74, risco: 0.43, ops: 35, v: 18, d: 17 },
+    { m: "Fevereiro/26", lucro: 6.70, risco: 0.55, ops: 37, v: 26, d: 11 },
+    { m: "Março/26", lucro: 4.84, risco: 0.77, ops: 47, v: 30, d: 17 },
+    { m: "Abril/26", lucro: 6.38, risco: 0.38, ops: 43, v: 30, d: 13 },
+    { m: "Maio/26", lucro: 7.43, risco: 0.40, ops: 31, v: 22, d: 9 },
+    { m: "Junho/26", lucro: 5.86, risco: 0.67, ops: 44, v: 26, d: 18 },
+    { m: "Julho/26*", lucro: 4.81, risco: 0.50, ops: 27, v: 20, d: 7 },
+  ];
+
+  return (
+    <section id="resultados" className="py-24 md:py-32 bg-card/20 border-y border-border">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <p className="text-xs tracking-[0.3em] uppercase text-gold mb-4">Histórico Real e Verificável</p>
+          <h2 className="font-display text-4xl md:text-5xl mb-4">Resultados <em className="text-gradient-gold not-italic">mês a mês</em>, sem maquiagem</h2>
+          <p className="text-muted-foreground">
+            Extraído direto do relatório oficial da corretora (conta real, XAUUSD). Lucro e risco calculados sobre o saldo em cascata — cada mês parte do resultado real do mês anterior, sem embelezar a média.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-3 gap-6 mb-14">
+          {[
+            { n: "$10.000 → $14.573", l: "Saldo Jan–Jul 2026" },
+            { n: "+45,73%", l: "Retorno Acumulado" },
+            { n: "7", l: "Meses Consecutivos Positivos" },
+          ].map((s) => (
+            <div key={s.l} className="text-center p-8 rounded-2xl border border-gold/20 bg-background/60">
+              <div className="font-display text-3xl md:text-4xl text-gradient-gold font-semibold mb-2">{s.n}</div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground">{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="overflow-x-auto rounded-2xl border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-card/60 text-left text-muted-foreground text-xs uppercase tracking-wider">
+                <th className="p-4">Mês</th>
+                <th className="p-4 text-right">Lucro</th>
+                <th className="p-4 text-right">Risco (drawdown)</th>
+                <th className="p-4 text-right hidden sm:table-cell">Operações</th>
+                <th className="p-4 text-right hidden md:table-cell">Vitórias / Derrotas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {meses.map((row) => (
+                <tr key={row.m} className="border-t border-border">
+                  <td className="p-4 font-display">{row.m}</td>
+                  <td className="p-4 text-right font-display text-gold font-semibold">+{row.lucro.toFixed(2)}%</td>
+                  <td className="p-4 text-right text-muted-foreground">{row.risco.toFixed(2)}%</td>
+                  <td className="p-4 text-right text-muted-foreground hidden sm:table-cell">{row.ops}</td>
+                  <td className="p-4 text-right text-muted-foreground hidden md:table-cell">{row.v}V / {row.d}D</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-xs text-muted-foreground text-center mt-6 max-w-2xl mx-auto leading-relaxed">
+          *Julho/26 ainda está em andamento no relatório (dados até dia 17). Histórico de uma conta real, verificável junto à corretora.
+          Resultado passado não garante resultado futuro — mercado envolve risco e os números podem variar entre contas e períodos.
+        </p>
       </div>
     </section>
   );
