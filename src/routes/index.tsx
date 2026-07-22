@@ -9,6 +9,8 @@ import step3Cover from "@/assets/step-3-assinar-contrato.jpg";
 import step4Cover from "@/assets/step-4-saque.jpg";
 import { ChevronDown, ShieldCheck, Wallet, ArrowDownToLine, CheckCircle2, BadgeCheck, PlayCircle, Target, GraduationCap } from "lucide-react";
 import resultadosData from "@/data/resultados.json";
+import { LeadModalProvider, useLeadModal } from "@/lib/leadModalContext";
+import { LeadCaptureModal } from "@/components/LeadCaptureModal";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -60,24 +62,28 @@ const faqs = [
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Nav />
-      <Hero />
-      <Pain />
-      <Perfis />
-      <Security />
-      <Process />
-      <Authority />
-      <Resultados />
-      <Transparency />
-      <FAQ />
-      <FinalCTA />
-      <Footer />
-    </div>
+    <LeadModalProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <Nav />
+        <Hero />
+        <Pain />
+        <Perfis />
+        <Security />
+        <Process />
+        <Authority />
+        <Resultados />
+        <Transparency />
+        <FAQ />
+        <FinalCTA />
+        <Footer />
+      </div>
+      <LeadCaptureModal />
+    </LeadModalProvider>
   );
 }
 
 function Nav() {
+  const { openModal } = useLeadModal();
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/70 border-b border-border">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -94,15 +100,16 @@ function Nav() {
           <a href="#autoridade" className="hover:text-gold transition">Autoridade</a>
           <a href="#faq" className="hover:text-gold transition">FAQ</a>
         </nav>
-        <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
+        <button onClick={() => openModal(ACCOUNT_URL)} className="btn-gold btn-gold-hover px-5 py-2.5 rounded-lg text-sm font-semibold">
           Abra sua conta
-        </a>
+        </button>
       </div>
     </header>
   );
 }
 
 function Hero() {
+  const { openModal } = useLeadModal();
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -126,9 +133,9 @@ function Hero() {
             Você não precisa confiar seu dinheiro a ninguém para ter resultados no mercado financeiro.
           </p>
           <div className="flex flex-wrap gap-4">
-            <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-7 py-4 rounded-lg font-semibold">
+            <button onClick={() => openModal(ACCOUNT_URL)} className="btn-gold btn-gold-hover px-7 py-4 rounded-lg font-semibold">
               Abra sua conta →
-            </a>
+            </button>
             <a href={WA_URL} className="px-7 py-4 rounded-lg font-semibold border border-gold/40 text-gold hover:bg-gold/10 transition">
               Falar no WhatsApp
             </a>
@@ -492,6 +499,7 @@ function FAQ() {
 }
 
 function FinalCTA() {
+  const { openModal } = useLeadModal();
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -507,9 +515,9 @@ function FinalCTA() {
           Você não precisa confiar seu dinheiro a ninguém para ter resultados no mercado financeiro.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <a href={ACCOUNT_URL} className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg">
+          <button onClick={() => openModal(ACCOUNT_URL)} className="btn-gold btn-gold-hover px-8 py-4 rounded-lg font-semibold text-lg">
             Abra sua conta
-          </a>
+          </button>
           <a href={WA_URL} className="px-8 py-4 rounded-lg font-semibold border border-gold/40 text-gold hover:bg-gold/10 transition">
             Falar com suporte
           </a>

@@ -9,19 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TradingSemStressRouteImport } from './routes/trading-sem-stress'
-import { Route as QuizRouteImport } from './routes/quiz'
-import { Route as OuroElitePremiumRouteImport } from './routes/ouro-elite-premium'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OuroElitePremiumRouteImport } from './routes/ouro-elite-premium'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as TradingSemStressRouteImport } from './routes/trading-sem-stress'
 
-const TradingSemStressRoute = TradingSemStressRouteImport.update({
-  id: '/trading-sem-stress',
-  path: '/trading-sem-stress',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuizRoute = QuizRouteImport.update({
-  id: '/quiz',
-  path: '/quiz',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OuroElitePremiumRoute = OuroElitePremiumRouteImport.update({
@@ -29,9 +24,14 @@ const OuroElitePremiumRoute = OuroElitePremiumRouteImport.update({
   path: '/ouro-elite-premium',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TradingSemStressRoute = TradingSemStressRouteImport.update({
+  id: '/trading-sem-stress',
+  path: '/trading-sem-stress',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -71,18 +71,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/trading-sem-stress': {
-      id: '/trading-sem-stress'
-      path: '/trading-sem-stress'
-      fullPath: '/trading-sem-stress'
-      preLoaderRoute: typeof TradingSemStressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quiz': {
-      id: '/quiz'
-      path: '/quiz'
-      fullPath: '/quiz'
-      preLoaderRoute: typeof QuizRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ouro-elite-premium': {
@@ -92,11 +85,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OuroElitePremiumRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trading-sem-stress': {
+      id: '/trading-sem-stress'
+      path: '/trading-sem-stress'
+      fullPath: '/trading-sem-stress'
+      preLoaderRoute: typeof TradingSemStressRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
