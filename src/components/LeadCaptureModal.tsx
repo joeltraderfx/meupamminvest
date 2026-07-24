@@ -5,7 +5,7 @@ import { X, Loader2 } from "lucide-react";
 // Troque pela sua Access Key gratuita do Web3Forms (web3forms.com).
 // Essa chave é pública por natureza (fica visível no código do navegador) —
 // o serviço foi desenhado pra isso, não é um segredo.
-const WEB3FORMS_ACCESS_KEY = "SUA_ACCESS_KEY_AQUI";
+const WEB3FORMS_ACCESS_KEY = "e9852ebe-398b-4fea-9c7e-f290c51884fa";
 
 type Status = "idle" | "submitting" | "error";
 
